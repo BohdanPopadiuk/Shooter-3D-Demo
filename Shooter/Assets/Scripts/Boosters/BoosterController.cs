@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
 namespace Boosters
 {
-    public abstract class Booster: MonoBehaviour
+    public class BoosterController: MonoBehaviour
     {
+        public static Action<BoosterType> NewBoosterActivated;
+        
+        [SerializeField] private BoosterType boosterType;
         [SerializeField, Min(1)] protected float booster = 1.5f;
         [SerializeField, Min(0)] protected float boosterDuration = 5f;
     
@@ -20,16 +25,29 @@ namespace Boosters
         [Space(10)]
         [SerializeField] private Ease scaleAnimEase = Ease.InOutBack; 
         [SerializeField] private Ease hideAnimEase = Ease.InOutCubic;
-
+        
         private readonly List<Tween> _idleAnims = new List<Tween>();
-
+        
+        private IBoosterClient[] _clients;
+        private Coroutine _disableBoosterRoutine;
+        private const float DisabledBooster = 1;
         private bool _boosterUsed;
 
         private void Start()
         {
             IdleAnimation();
         }
-    
+
+        private void OnEnable()
+        {
+            NewBoosterActivated += ContinueBooster;
+        }
+
+        private void OnDisable()
+        {
+            NewBoosterActivated -= ContinueBooster;
+        }
+
         private void OnValidate()
         {
             if(boosterDuration < hideAnimDuration)
@@ -43,17 +61,49 @@ namespace Boosters
             if (other.CompareTag("Player"))
             {
                 _boosterUsed = true;
-            
-                ActivateBooster();
+                NewBoosterActivated?.Invoke(boosterType);
+                
+                _clients = other.GetComponentsInChildren<IBoosterClient>();
+                SetBoosters(booster);
+                
+                _disableBoosterRoutine = StartCoroutine(DisableBoosterWithDelay());
                 HideAnimation();
             }
         }
 
-        protected virtual void ActivateBooster()
+        private void SetBoosters(float value)
         {
-            
-        } 
-    
+            foreach (IBoosterClient client in _clients)
+            {
+                if (client.BoosterType == boosterType)
+                    client.Booster = value;
+            }
+        }
+
+        private IEnumerator DisableBoosterWithDelay()
+        {
+            yield return new WaitForSeconds(boosterDuration);
+        
+            _disableBoosterRoutine = null;
+            SetBoosters(DisabledBooster);
+            gameObject.SetActive(false);
+        }
+
+        private void ContinueBooster(BoosterType activatedBoosterType)
+        {
+            if(boosterType != activatedBoosterType) return;
+            if(!_boosterUsed) return;
+
+            if (_disableBoosterRoutine != null)
+            {
+                StopCoroutine(_disableBoosterRoutine);
+                gameObject.SetActive(false);
+            }
+        }
+        
+
+        #region Animations
+
         private void IdleAnimation()
         {
             Vector3 targetScale = transform.localScale * idleAnimScaleDelta;
@@ -81,12 +131,11 @@ namespace Boosters
             foreach (Tween tween in _idleAnims)
                 tween.Kill();
 
-            transform.DOScale(Vector3.zero, hideAnimDuration)
-                .SetEase(hideAnimEase)
-                .OnComplete(() =>
-                {
-                    gameObject.SetActive(false);
-                });
+            transform
+                .DOScale(Vector3.zero, hideAnimDuration)
+                .SetEase(hideAnimEase);
         }
+
+        #endregion
     }
 }
