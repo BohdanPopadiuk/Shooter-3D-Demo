@@ -1919,6 +1919,43 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1506376764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1506376765}
+  m_Layer: 8
+  m_Name: ArmPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1506376765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506376764}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5039659447486179277}
+  - {fileID: 3338417998696222769}
+  - {fileID: 6284344060561229178}
+  - {fileID: 6211365622972559629}
+  - {fileID: 5424005734650793005}
+  - {fileID: 3936980122665267776}
+  m_Father: {fileID: 6312692628340585689}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1520973899
 GameObject:
   m_ObjectHideFlags: 0
@@ -3650,7 +3687,7 @@ Transform:
   m_Children:
   - {fileID: 2974708385230470095}
   - {fileID: 8749957689025343132}
-  m_Father: {fileID: 6312692628340585689}
+  m_Father: {fileID: 1506376765}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3374912511018669925
@@ -3713,7 +3750,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6312692628340585689}
+  m_Father: {fileID: 1506376765}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4283329634869234718
@@ -3891,7 +3928,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6312692628340585689}
+  m_Father: {fileID: 1506376765}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5263772593038525909
@@ -3922,7 +3959,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6312692628340585689}
+  m_Father: {fileID: 1506376765}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &5540249926042288288
@@ -4214,7 +4251,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6312692628340585689}
+  m_Father: {fileID: 1506376765}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &6284344060561229178
@@ -4229,7 +4266,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6312692628340585689}
+  m_Father: {fileID: 1506376765}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &6297386414469092310
@@ -4275,12 +4312,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5039659447486179277}
-  - {fileID: 3338417998696222769}
-  - {fileID: 6284344060561229178}
-  - {fileID: 6211365622972559629}
-  - {fileID: 5424005734650793005}
-  - {fileID: 3936980122665267776}
+  - {fileID: 1506376765}
   m_Father: {fileID: 400234017}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4376,7 +4408,7 @@ GameObject:
   - component: {fileID: 6688092644608306788}
   - component: {fileID: 6688092644608306790}
   m_Layer: 8
-  m_Name: FPS_ARMS
+  m_Name: FPS_ARM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4398,21 +4430,28 @@ MonoBehaviour:
   - moveState: 0
     bobbingEffectMultiplier: 0
     playBobbingAnimation: 0
+    armsPivotOffset: {x: 0, y: 0, z: 0}
   - moveState: 1
     bobbingEffectMultiplier: 0
     playBobbingAnimation: 0
+    armsPivotOffset: {x: 0, y: 0.07, z: 0}
   - moveState: 2
     bobbingEffectMultiplier: 1
     playBobbingAnimation: 1
+    armsPivotOffset: {x: 0, y: 0, z: 0}
   - moveState: 3
     bobbingEffectMultiplier: 1.3
     playBobbingAnimation: 1
+    armsPivotOffset: {x: 0, y: 0, z: 0}
   - moveState: 4
     bobbingEffectMultiplier: 1.5
     playBobbingAnimation: 1
+    armsPivotOffset: {x: 0, y: 0, z: 0}
   effectIntensity: 0.02
   effectIntensityX: 1
   effectSpeed: 10
+  armPivotMoveDuration: 0.1
+  armPivot: {fileID: 1506376765}
   offset: {x: 0, y: 0.1, z: 0}
 --- !u!114 &6688092644608306790
 MonoBehaviour:

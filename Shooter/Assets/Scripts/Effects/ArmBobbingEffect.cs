@@ -11,13 +11,15 @@ namespace Effects
         [SerializeField] private float effectIntensity = 0.02f;
         [SerializeField] private float effectIntensityX = 1;
         [SerializeField] private float effectSpeed = 10;
+
+        [SerializeField, Range(0, 1)] private float armPivotMoveDuration = 1;
+        [SerializeField] private Transform armPivot;
         
         [SerializeField] private Vector3 offset;
-
+        
+        private BobbingParameters _currentAnimationParameters;
         private Vector3 _originalOffset;
         private float _sinTime;
-
-        private BobbingParameters _currentAnimationParameters;
 
         private void Start()
         {
@@ -54,6 +56,9 @@ namespace Effects
         
         private void Bobbing()
         {
+            Vector3 pivotTargetPos = _currentAnimationParameters.armsPivotOffset;
+            armPivot.localPosition = Vector3.Slerp(armPivot.localPosition, pivotTargetPos, armPivotMoveDuration);
+            
             Vector3 targetPos = transform.parent.position;
             transform.position = targetPos + offset;
             
