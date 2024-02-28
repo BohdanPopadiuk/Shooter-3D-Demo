@@ -45,7 +45,7 @@ namespace Weapons
 
         private IEnumerator Reload()
         {
-            //ToDo reloadAnim
+            //ToDo (RELOAD ANIMATION) still has no animation, I set (reloadTime 0)
             AttackLocked = true;
             
             yield return new WaitForSeconds(reloadTime);
