@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3dc01afc554b4eb6877a2e2f779ac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
+  damage: 125
   attackDuration: 0.7
   <Type>k__BackingField: 0
   maxMagazineCapacity: 30
