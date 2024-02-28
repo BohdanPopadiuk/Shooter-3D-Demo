@@ -29,11 +29,6 @@ namespace UI
             rightLine.localPosition = new Vector2(defaultScale, 0);
         }
 
-        private void Start()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-
         private void OnEnable()
         {
             PlayerStateManager.NewMoveState += ResizeCrosshair;

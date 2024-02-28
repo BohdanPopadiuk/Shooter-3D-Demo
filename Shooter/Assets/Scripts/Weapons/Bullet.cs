@@ -7,10 +7,14 @@ namespace Weapons
     [RequireComponent(typeof(Rigidbody))]
     public class Bullet: MonoBehaviour
     {
-        [SerializeField] private Collider col;
+        [SerializeField] private SphereCollider col;
         [SerializeField] private Rigidbody rb;
         [SerializeField] private float bulletSpeed = 5;
+        [SerializeField] private float impactForce = 5;
         [SerializeField] private ParticleSystem hitParticles;
+        [SerializeField] private TrailRenderer trailRenderer;
+        
+        [SerializeField] private GameObject splashZone;
 
         private ObjectPool<Bullet> _pool;
         private float _damage;
@@ -30,10 +34,20 @@ namespace Weapons
                 rb.useGravity = false;
             }
         }
-        
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+            if (trailRenderer != null)
+                trailRenderer.Clear();
+        }
+
         public void Initialize(ObjectPool<Bullet> pool)
         {
             _pool = pool;
+            
+            if (splashZone != null)
+                splashZone.SetActive(false);
         }
 
         private void FixedUpdate()
@@ -42,27 +56,50 @@ namespace Weapons
                 rb.velocity = transform.forward * bulletSpeed;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision collision)
         {
-            if(other.CompareTag("BulletTarget"))
+            if(!_bulletHit)
+                StartCoroutine(Hit());
+            
+            GameObject colObject = collision.gameObject;
+            
+            if(colObject.CompareTag("BulletTarget"))
             {
-                other.GetComponent<IWeaponTarget>()?.TakeDamage(_damage);
+                colObject.GetComponent<IWeaponTarget>()?.TakeDamage(_damage);
             }
 
-            if(!_bulletHit)
-                StartCoroutine(BulletHit());
+            if (!colObject.isStatic)
+            {
+                Rigidbody otherRb = colObject.GetComponent<Rigidbody>();
+                if (otherRb != null)
+                {
+                    Vector3 direction = -collision.contacts[0].normal;
+                    otherRb.AddForce(direction * impactForce);
+                }
+            }
+
         }
 
-        private IEnumerator BulletHit()
+        private IEnumerator Hit()
         {
+            if (splashZone != null)
+                splashZone.SetActive(true);
+            
             _bulletHit = true;
-            //ToDo playParticles && playSFX
             
             col.enabled = false;
             rb.velocity = Vector3.zero;
             
             hitParticles.Play();
 
+            float duration = 0.2f;
+            
+            if (splashZone != null)
+            {
+                yield return new WaitForSeconds(duration);
+                splashZone.SetActive(false);
+            }
+            
             yield return new WaitForSeconds(HitParticlesDuration);
             _pool.Return(this);
         }

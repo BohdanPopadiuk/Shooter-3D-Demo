@@ -1,3 +1,4 @@
+using Boosters;
 using Player;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,14 +9,17 @@ namespace UI
     {
         [SerializeField] private PlayerStateIcon[] playerStateIcons;
         [SerializeField] private Image playerStateImage;
+        [SerializeField] private BoosterIndicator[] boosterIndicators;
         private void OnEnable()
         {
             PlayerStateManager.NewMoveState += ChangePlayerIcon;
+            BoosterController.NewBoosterActivated += ShowActiveBooster;
         }
 
         private void OnDisable()
         {
             PlayerStateManager.NewMoveState -= ChangePlayerIcon;
+            BoosterController.NewBoosterActivated += ShowActiveBooster;
         }
         
         private void ChangePlayerIcon(MoveState moveState)
@@ -26,6 +30,19 @@ namespace UI
                 {
                     playerStateImage.sprite = playerStateIcon.icon;
                     break;
+                }
+            }
+        }
+
+        private void ShowActiveBooster(BoosterController boosterController)
+        {
+            foreach (var indicator in boosterIndicators)
+            {
+                if (indicator.GetBoosterType == boosterController.GetBoosterType)
+                {
+                    indicator.Run(boosterController.BoosterDuration);
+                    
+                    return;
                 }
             }
         }

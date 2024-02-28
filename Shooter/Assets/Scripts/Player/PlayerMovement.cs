@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using Boosters;
 using UnityEngine;
 
@@ -9,6 +11,7 @@ namespace Player
         [SerializeField] private float moveSpeed = 3;
         [SerializeField] private float moveAccelerator = 3f;
         [SerializeField] private float jumpForce = 5;
+        [SerializeField] private float maxSlopeAngle = 30;
     
         [Header("GroundCheck")]
         [SerializeField] private float groundCheckRadius = .2f;
@@ -20,22 +23,24 @@ namespace Player
         [SerializeField] private float minHeadAngle = -90;
         [SerializeField] private float maxHeadAngle = 90;
         [SerializeField] private Transform head;
-    
+
         private PlayerInput _input;
     
         private Rigidbody _rigidbody;
         private Vector3 _headAngle;
         private Vector2 _headInputOffset;
+        private RaycastHit _slopeHit;
+        private bool _lockGroundCheck;
 
-        
         public BoosterType BoosterType { get; } = BoosterType.MovementBooster;
         private Vector2 HeadRotationInput => _input.Base.HeadRotation.ReadValue<Vector2>();
-        public Vector2 MoveInput { get; private set; }
+        public Vector2 MoveInput => _input.Base.Move.ReadValue<Vector2>();
         public float Booster { get; set; } = 1;
         private float CalculatedMoveAccelerator => (IsAcceleratedMove ? moveAccelerator : 1) * Booster;
         private float CalculatedSpeed => moveSpeed * CalculatedMoveAccelerator;
         private float CalculatedJumpForce => jumpForce * Booster;
-        public bool IsGround => Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
+        public bool IsGround => !_lockGroundCheck &&
+                                Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
         public bool IsAcceleratedMove { get; private set; }
         
 
@@ -45,6 +50,11 @@ namespace Player
 
             _input = new PlayerInput();
             _input.Base.Jump.performed += _ => Jump();
+        }
+
+        private void Start()
+        {
+            _headInputOffset = HeadRotationInput;
         }
 
         private void OnEnable()
@@ -60,9 +70,6 @@ namespace Player
 
         private void Update()
         {
-            //input
-            MoveInput = _input.Base.Move.ReadValue<Vector2>();
-
             HeadRotation();
             SwitchAccelerationMove();
         }
@@ -83,11 +90,7 @@ namespace Player
 
         private void Move()
         {
-            Vector3 direction = new Vector3(MoveInput.x, 0, MoveInput.y);
-            direction = head.TransformDirection(direction);
-            direction = direction.normalized;
-        
-            Vector3 calculatedVelocity = direction * CalculatedSpeed;
+            Vector3 calculatedVelocity = CalculateMoveDirection() * CalculatedSpeed;
             calculatedVelocity.y = _rigidbody.velocity.y;
         
             _rigidbody.velocity = calculatedVelocity;
@@ -97,10 +100,11 @@ namespace Player
         {
             if(!IsGround) return;
 
+            StartCoroutine(BlockGroundCheck());
             Vector3 force = Vector3.up * CalculatedJumpForce;
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
-    
+
         private void HeadRotation()
         {
             _headAngle.x -= HeadRotationInput.y + _headInputOffset.y;
@@ -110,10 +114,40 @@ namespace Player
             Quaternion targetRotation = Quaternion.Euler(_headAngle.x, _headAngle.y, 0);
             head.localRotation = Quaternion.Slerp(head.localRotation, targetRotation, headSensitivity);
         }
-    
+
         private void SwitchAccelerationMove()
         {
             IsAcceleratedMove = (_input.Base.Run.ReadValue<float>() > 0.1f);
+        }
+        
+        private Vector3 CalculateMoveDirection()
+        {
+            Vector3 direction = new Vector3(MoveInput.x, 0, MoveInput.y);
+            direction = head.TransformDirection(direction);
+            
+            if(OnSlope())
+            {
+                direction = Vector3.ProjectOnPlane(direction, _slopeHit.normal);
+            }
+            
+            return direction.normalized;
+        }
+
+        private bool OnSlope()
+        {
+            if(Physics.Raycast(groundCheck.position, Vector3.down, out _slopeHit, groundCheckRadius))
+            {
+                float angle = Vector3.Angle(Vector3.up, _slopeHit.normal);
+                return angle < maxSlopeAngle && angle != 0;
+            }
+            return false;
+        }
+
+        private IEnumerator BlockGroundCheck()
+        {
+            _lockGroundCheck = true;
+            yield return new WaitForSeconds(.3f);
+            _lockGroundCheck = false;
         }
     }
 }

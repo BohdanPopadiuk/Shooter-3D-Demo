@@ -8,11 +8,11 @@ namespace Boosters
 {
     public class BoosterController: MonoBehaviour
     {
-        public static Action<BoosterType> NewBoosterActivated;
-        
+        public static Action<BoosterController> NewBoosterActivated;
+
         [SerializeField] private BoosterType boosterType;
-        [SerializeField, Min(1)] protected float booster = 1.5f;
-        [SerializeField, Min(0)] protected float boosterDuration = 5f;
+        [field: SerializeField, Min(0)] public float Booster { get; private set; } = 1.5f;
+        [field: SerializeField, Min(0)] public float BoosterDuration { get; private set; } = 5;
     
         [Header("Anim")]
         [SerializeField, Min(0)] private float hideAnimDuration = .5f;
@@ -33,6 +33,8 @@ namespace Boosters
         private const float DisabledBooster = 1;
         private bool _boosterUsed;
 
+        public BoosterType GetBoosterType => boosterType;
+
         private void Start()
         {
             IdleAnimation();
@@ -50,7 +52,7 @@ namespace Boosters
 
         private void OnValidate()
         {
-            if(boosterDuration < hideAnimDuration)
+            if(BoosterDuration < hideAnimDuration)
                 Debug.LogWarning("'boosterDuration' must be greater than 'hideAnimDuration'");
         }
 
@@ -61,10 +63,10 @@ namespace Boosters
             if (other.CompareTag("Player"))
             {
                 _boosterUsed = true;
-                NewBoosterActivated?.Invoke(boosterType);
+                NewBoosterActivated?.Invoke(this);
                 
                 _clients = other.GetComponentsInChildren<IBoosterClient>();
-                SetBoosters(booster);
+                SetBoosters(Booster);
                 
                 _disableBoosterRoutine = StartCoroutine(DisableBoosterWithDelay());
                 HideAnimation();
@@ -82,16 +84,16 @@ namespace Boosters
 
         private IEnumerator DisableBoosterWithDelay()
         {
-            yield return new WaitForSeconds(boosterDuration);
+            yield return new WaitForSeconds(BoosterDuration);
         
             _disableBoosterRoutine = null;
             SetBoosters(DisabledBooster);
             gameObject.SetActive(false);
         }
 
-        private void ContinueBooster(BoosterType activatedBoosterType)
+        private void ContinueBooster(BoosterController boosterController)
         {
-            if(boosterType != activatedBoosterType) return;
+            if(boosterType != boosterController.boosterType) return;
             if(!_boosterUsed) return;
 
             if (_disableBoosterRoutine != null)

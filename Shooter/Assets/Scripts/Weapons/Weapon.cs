@@ -7,23 +7,25 @@ namespace Weapons
     public abstract class Weapon: MonoBehaviour
     {
         protected Action AttackRealization;
-
         //[SerializeField] private Rigidbody rb;
         //[SerializeField] private Collider col;
         [SerializeField] private float damage;
         [SerializeField] protected float attackDuration;
+        [field: SerializeField] public WeaponType Type { get; protected set; }
 
+        protected Vector3 TargetPos;
         protected bool AttackLocked = false;
         private bool _canAttack = true;
         private float _damageMultiplier = 1;
         protected float CalculatedDamage => damage * _damageMultiplier;
 
-        public bool Attack(float multiplier = 1)
+        public bool Attack(Vector3 targetPos, float multiplier = 1)
         {
             if(!_canAttack || AttackLocked)
                 return false;
             
             _damageMultiplier = multiplier;
+            TargetPos = targetPos;
             
             StartCoroutine(AttackDuration());
             AttackRealization?.Invoke();

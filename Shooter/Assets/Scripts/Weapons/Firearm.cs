@@ -27,10 +27,13 @@ namespace Weapons
 
         protected virtual void Shoot()
         {
+            bulletSpawnPoint.LookAt(TargetPos);
+            
             Bullet bullet = _bulletPool.Get();
             bullet.SetBullet(bulletSpawnPoint, CalculatedDamage, _bulletPool);
 
-            flashParticles.Play();
+            if (flashParticles != null)
+                flashParticles.Play();
             
             _magazineCapacity--;
             
