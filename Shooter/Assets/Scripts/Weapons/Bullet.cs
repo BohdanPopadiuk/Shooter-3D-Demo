@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using ObjectPool;
 using UnityEngine;
 
@@ -7,18 +8,23 @@ namespace Weapons
     [RequireComponent(typeof(Rigidbody))]
     public class Bullet: MonoBehaviour
     {
-        [SerializeField] private SphereCollider col;
-        [SerializeField] private Rigidbody rb;
         [SerializeField] private float bulletSpeed = 5;
         [SerializeField] private float impactForce = 5;
+        
+        [Space(10)]
+        [SerializeField] private SphereCollider col;
+        [SerializeField] private MeshRenderer meshRenderer;
+        [SerializeField] private Rigidbody rb;
+
+        [Space(10)]
         [SerializeField] private ParticleSystem hitParticles;
         [SerializeField] private TrailRenderer trailRenderer;
-        
-        [SerializeField] private GameObject splashZone;
+        [SerializeField] private BulletSplashZone splashZone;
 
         private ObjectPool<Bullet> _pool;
         private float _damage;
         private bool _bulletHit;
+        private bool _canTakeDamage;
         private float HitParticlesDuration => hitParticles.main.duration;
         
         private void OnValidate()
@@ -47,7 +53,7 @@ namespace Weapons
             _pool = pool;
             
             if (splashZone != null)
-                splashZone.SetActive(false);
+                splashZone.Disable();
         }
 
         private void FixedUpdate()
@@ -63,7 +69,7 @@ namespace Weapons
             
             GameObject colObject = collision.gameObject;
             
-            if(colObject.CompareTag("BulletTarget"))
+            if(colObject.CompareTag("BulletTarget") && _canTakeDamage)
             {
                 colObject.GetComponent<IWeaponTarget>()?.TakeDamage(_damage);
             }
@@ -77,17 +83,17 @@ namespace Weapons
                     otherRb.AddForce(direction * impactForce);
                 }
             }
-
         }
 
         private IEnumerator Hit()
         {
             if (splashZone != null)
-                splashZone.SetActive(true);
-            
+                splashZone.Enable(_damage);
+
             _bulletHit = true;
             
             col.enabled = false;
+            meshRenderer.enabled = false;
             rb.velocity = Vector3.zero;
             
             hitParticles.Play();
@@ -97,7 +103,7 @@ namespace Weapons
             if (splashZone != null)
             {
                 yield return new WaitForSeconds(duration);
-                splashZone.SetActive(false);
+                splashZone.Disable();
             }
             
             yield return new WaitForSeconds(HitParticlesDuration);
@@ -108,6 +114,9 @@ namespace Weapons
         {
             _bulletHit = false;
             col.enabled = true;
+            meshRenderer.enabled = true;
+            
+            _canTakeDamage = (splashZone == null);
             
             transform.position = spawnPoint.position;
             transform.rotation = Quaternion.LookRotation(spawnPoint.forward);

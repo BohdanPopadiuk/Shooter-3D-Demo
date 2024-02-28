@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Effects
 {
@@ -9,15 +10,21 @@ namespace Effects
         private PlayerInput _input;
         private Vector2 HeadRotation => _input.Base.HeadRotation.ReadValue<Vector2>();
 
-        private void Awake()
+        private bool _lockMovement = true;
+
+        private IEnumerator Start()
         {
+            yield return new WaitForSeconds(.5f);
+            _lockMovement = false;
+            
             _input = new PlayerInput();
             _input.Enable();
         }
 
         private void Update()
         {
-
+            if(_lockMovement) return;
+            
             float scaledSmooth =  smooth * Time.deltaTime;
             
             Quaternion targetRotation = Quaternion.AngleAxis(HeadRotation.x, Vector3.up);

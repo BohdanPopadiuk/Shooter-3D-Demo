@@ -50,7 +50,6 @@ namespace Enemy
             }
         }
 
-
         private Color CalculateColor()
         {
             float healthDelta = enemyHealth.Health / enemyHealth.MaxHealth;

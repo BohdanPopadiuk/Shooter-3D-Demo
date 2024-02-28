@@ -31,6 +31,7 @@ namespace Player
         private Vector2 _headInputOffset;
         private RaycastHit _slopeHit;
         private bool _lockGroundCheck;
+        private bool _lockMovement = true;
 
         public BoosterType BoosterType { get; } = BoosterType.MovementBooster;
         private Vector2 HeadRotationInput => _input.Base.HeadRotation.ReadValue<Vector2>();
@@ -52,20 +53,13 @@ namespace Player
             _input.Base.Jump.performed += _ => Jump();
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
-            _headInputOffset = HeadRotationInput;
-        }
-
-        private void OnEnable()
-        {
+            yield return new WaitForSeconds(.5f);
+            _lockMovement = false;
+            
             _input.Enable();
             _headInputOffset = HeadRotationInput;
-        }
-
-        private void OnDisable()
-        {
-            _input.Disable();
         }
 
         private void Update()
@@ -90,6 +84,8 @@ namespace Player
 
         private void Move()
         {
+            if(_lockMovement) return;
+
             Vector3 calculatedVelocity = CalculateMoveDirection() * CalculatedSpeed;
             calculatedVelocity.y = _rigidbody.velocity.y;
         
@@ -98,6 +94,8 @@ namespace Player
     
         private void Jump()
         {
+            if(_lockMovement) return;
+
             if(!IsGround) return;
 
             StartCoroutine(BlockGroundCheck());
@@ -107,9 +105,11 @@ namespace Player
 
         private void HeadRotation()
         {
-            _headAngle.x -= HeadRotationInput.y + _headInputOffset.y;
+            if(_lockMovement) return;
+            
+            _headAngle.x -= HeadRotationInput.y - _headInputOffset.y;
             _headAngle.x = Mathf.Clamp(_headAngle.x, minHeadAngle, maxHeadAngle);
-            _headAngle.y += HeadRotationInput.x + _headInputOffset.x;
+            _headAngle.y += HeadRotationInput.x - _headInputOffset.x;
 
             Quaternion targetRotation = Quaternion.Euler(_headAngle.x, _headAngle.y, 0);
             head.localRotation = Quaternion.Slerp(head.localRotation, targetRotation, headSensitivity);
