@@ -1085,6 +1085,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6751349888943056568}
+  - component: {fileID: 1765288146}
   m_Layer: 8
   m_Name: L_arm
   m_TagString: Untagged
@@ -1108,6 +1109,25 @@ Transform:
   m_Father: {fileID: 6534059002690817350}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1765288146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5955257958508703632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56ce195ba26329b45a4556d3474159e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLeftHand: 1
+  wrist: {fileID: 1485659210640066928}
+  elbow: {fileID: 2670338245139179722}
+  pistolShootWristAngle: 13.88
+  pistolShootElbowOffset: 0.07
+  pistolShootDuration: 0.1
+  pistolShootEase: 1
 --- !u!1 &6027996118508132162
 GameObject:
   m_ObjectHideFlags: 0
@@ -1309,6 +1329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 979477224079422443}
+  - component: {fileID: 492697885}
   m_Layer: 8
   m_Name: R_arm
   m_TagString: Untagged
@@ -1332,6 +1353,25 @@ Transform:
   m_Father: {fileID: 6534059002690817350}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &492697885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7034199062317327898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56ce195ba26329b45a4556d3474159e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLeftHand: 0
+  wrist: {fileID: 3785037068669157344}
+  elbow: {fileID: 4005580141185211136}
+  pistolShootWristAngle: -13.88
+  pistolShootElbowOffset: -0.07
+  pistolShootDuration: 0.1
+  pistolShootEase: 1
 --- !u!1 &7096463085894336921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,9 +2001,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
-  field of view: 60
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2094,7 +2134,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1
-  headSensitivity: 0.1
+  headSensitivity: 0.3
   minHeadAngle: -80
   maxHeadAngle: 80
   head: {fileID: 8429002855670631254}
@@ -2114,7 +2154,7 @@ MonoBehaviour:
   secondWeapon: {fileID: 8429002855155072142}
   targetMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
 --- !u!114 &8429002854945035033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2365,7 +2405,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
