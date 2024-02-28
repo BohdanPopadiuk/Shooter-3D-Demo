@@ -2016,11 +2016,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 338624477}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &347652862 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1485659210640066928, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-  m_PrefabInstance: {fileID: 1545047476}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &351823987
 GameObject:
   m_ObjectHideFlags: 0
@@ -2735,30 +2730,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6024456720978950944, guid: 28828323647796a459fc3d23d83b43ff, type: 3}
   m_PrefabInstance: {fileID: 1205418422}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &492697883 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7034199062317327898, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-  m_PrefabInstance: {fileID: 1545047476}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &492697885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 492697883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56ce195ba26329b45a4556d3474159e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLeftHand: 0
-  wrist: {fileID: 1035061510}
-  elbow: {fileID: 1866897992}
-  pistolShootWristAngle: -13.88
-  pistolShootElbowOffset: -0.07
-  pistolShootDuration: 0.1
-  pistolShootEase: 1
 --- !u!1001 &517174872
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6240,11 +6211,6 @@ Transform:
   m_Father: {fileID: 1026612209}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1035061510 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3785037068669157344, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-  m_PrefabInstance: {fileID: 1545047476}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1041189025
 GameObject:
   m_ObjectHideFlags: 0
@@ -9002,25 +8968,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8429002854910554116, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-      propertyPath: field of view
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 8429002854910554116, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-      propertyPath: near clip plane
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8429002854945035024, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-      propertyPath: headSensitivity
-      value: 0.3
-      objectReference: {fileID: 0}
     - target: {fileID: 8429002854945035025, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8429002854945035034, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-      propertyPath: targetMask.m_Bits
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8429002854945035035, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
       propertyPath: m_RootOrder
@@ -9065,10 +9015,6 @@ PrefabInstance:
     - target: {fileID: 8429002854945035035, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8429002856355106460, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-      propertyPath: field of view
-      value: 70
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
@@ -10404,30 +10350,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755815729}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1765288144 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5955257958508703632, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-  m_PrefabInstance: {fileID: 1545047476}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1765288146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765288144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56ce195ba26329b45a4556d3474159e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLeftHand: 1
-  wrist: {fileID: 347652862}
-  elbow: {fileID: 2046552228}
-  pistolShootWristAngle: 13.88
-  pistolShootElbowOffset: 0.07
-  pistolShootDuration: 0.1
-  pistolShootEase: 1
 --- !u!1001 &1788208445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10776,11 +10698,6 @@ Transform:
   m_Father: {fileID: 1831509355}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1866897992 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4005580141185211136, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-  m_PrefabInstance: {fileID: 1545047476}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1867590887
 GameObject:
   m_ObjectHideFlags: 0
@@ -11842,11 +11759,6 @@ Transform:
   m_Father: {fileID: 1861476356}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!4 &2046552228 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2670338245139179722, guid: e5eaa9de2a16cf84da9120fa297c8868, type: 3}
-  m_PrefabInstance: {fileID: 1545047476}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2052795511
 GameObject:
   m_ObjectHideFlags: 0
